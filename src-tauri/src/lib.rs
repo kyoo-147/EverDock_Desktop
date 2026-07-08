@@ -1,10 +1,13 @@
 // Define module architecture
+pub mod domain;
+pub mod application;
 pub mod core;
 pub mod adapters;
 pub mod storage;
 pub mod security;
 pub mod remote;
 pub mod commands;
+
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {

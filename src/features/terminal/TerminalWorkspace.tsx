@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { 
   Plus, 
   Gear, 
@@ -7,47 +6,39 @@ import {
   Check
 } from "@phosphor-icons/react";
 import TerminalGrid from "./TerminalGrid";
-import ChatThread, { ChatMessage } from "../chat/ChatThread";
+import ChatThread from "../chat/ChatThread";
 import ChatInput from "../chat/ChatInput";
 import ApprovalCard from "../approvals/ApprovalCard";
-import { mockMCConsoles } from "../../mocks/terminal.mock";
+import { useTerminalStore } from "../../stores/terminal.store";
 
 export default function TerminalWorkspace() {
-  const [activeTab, setActiveTab] = useState<string>("all");
-  const [panes, setPanes] = useState(mockMCConsoles);
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
-    { sender: "System", time: "10:15 AM", text: "Session started. Codex and Claude initialized." },
-    { sender: "Claude", time: "10:16 AM", text: "I have analyzed the codebase. The login route lacks validation." },
-    { sender: "User", time: "10:20 AM", text: "Go ahead and fix it." },
-    { sender: "Claude", time: "10:24 AM", text: "Ready to implement redirect middleware. Requires high-risk write permission." }
-  ]);
-  const [showApproval, setShowApproval] = useState(true);
+  const {
+    activeTab,
+    setActiveTab,
+    panes,
+    chatMessages,
+    showApproval,
+    setShowApproval,
+    addMessage,
+    closePane
+  } = useTerminalStore();
 
   const handleSendMessage = (text: string) => {
-    setChatMessages(prev => [
-      ...prev,
-      { sender: "User", time: "Just now", text }
-    ]);
+    addMessage({ sender: "User", time: "Just now", text });
   };
 
   const handleClosePane = (id: string) => {
-    setPanes(prev => prev.filter(p => p.id !== id));
+    closePane(id);
   };
 
   const handleApprove = () => {
     setShowApproval(false);
-    setChatMessages(prev => [
-      ...prev,
-      { sender: "System", time: "Just now", text: "✓ Write permission approved by user." }
-    ]);
+    addMessage({ sender: "System", time: "Just now", text: "✓ Write permission approved by user." });
   };
 
   const handleReject = () => {
     setShowApproval(false);
-    setChatMessages(prev => [
-      ...prev,
-      { sender: "System", time: "Just now", text: "✗ Write permission rejected by user." }
-    ]);
+    addMessage({ sender: "System", time: "Just now", text: "✗ Write permission rejected by user." });
   };
 
   return (

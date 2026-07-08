@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import { TerminalSession } from "./terminal.types";
 import { mockMCConsoles } from "../../mocks/terminal.mock";
+import { 
+  spawnPty, 
+  killPtySession, 
+  writePtyInput, 
+  resizePtySession 
+} from "../../lib/ipc";
 
 export function useTerminalSessions() {
   const [sessions, setSessions] = useState<TerminalSession[]>([]);
@@ -31,12 +37,8 @@ export function useTerminalSessions() {
       shell
     };
 
-    // Prepare for Tauri Rust IPC:
-    // try {
-    //   await invoke("spawn_pty_session", { id: newId, shell, cwd: '~/Projects/herdr' });
-    // } catch (e) {
-    //   console.error("Failed to spawn PTY on Rust backend", e);
-    // }
+    // Invoke Tauri IPC call
+    await spawnPty(shell, '~/Projects/herdr');
 
     setSessions(prev => [...prev, newSession]);
     setActiveSessionId(newId);
@@ -44,12 +46,8 @@ export function useTerminalSessions() {
   };
 
   const closeSession = async (id: string) => {
-    // Prepare for Tauri Rust IPC:
-    // try {
-    //   await invoke("kill_pty_session", { id });
-    // } catch (e) {
-    //   console.error("Failed to kill PTY on Rust backend", e);
-    // }
+    // Invoke Tauri IPC call
+    await killPtySession(id);
 
     setSessions(prev => prev.filter(s => s.id !== id));
     if (activeSessionId === id) {
@@ -60,14 +58,14 @@ export function useTerminalSessions() {
 
   const sendInput = async (id: string, text: string) => {
     console.log(`Sending PTY input to ${id}: ${text}`);
-    // Prepare for Tauri Rust IPC:
-    // await invoke("write_pty_input", { id, text });
+    // Invoke Tauri IPC call
+    await writePtyInput(id, text);
   };
 
   const resizeTerminal = async (id: string, cols: number, rows: number) => {
     console.log(`Resizing PTY ${id} to ${cols}x${rows}`);
-    // Prepare for Tauri Rust IPC:
-    // await invoke("resize_pty_session", { id, cols, rows });
+    // Invoke Tauri IPC call
+    await resizePtySession(id, cols, rows);
   };
 
   return {
