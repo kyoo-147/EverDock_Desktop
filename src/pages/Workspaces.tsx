@@ -1,11 +1,12 @@
-import { 
-  Folder, 
+import {   Folder, 
   GitBranch, 
   ArrowClockwise, 
   Plus, 
   CaretRight
 } from "@phosphor-icons/react";
-import { mockWorkspaceDetail, mockSpaces } from "../data/mockData";
+import WorkspaceCard from "../features/workspaces/WorkspaceCard";
+import ServerStatusItem from "../features/servers/ServerStatusItem";
+import { mockWorkspaceDetail, mockSpaces } from "../mocks/workspace.mock";
 
 export default function Workspaces() {
   const ws = mockWorkspaceDetail;
@@ -21,7 +22,7 @@ export default function Workspaces() {
           {mockSpaces.map((space) => (
             <button
               key={space.name}
-              className={`w-full flex items-center justify-between px-2 py-1.5 rounded-lg text-[12.5px] font-semibold ${
+              className={`w-full flex items-center justify-between px-2 py-1.5 rounded-lg text-[12.5px] font-semibold cursor-pointer ${
                 space.name === "herdr" ? "bg-active-bg text-primary-blue" : "text-text-secondary hover:bg-background hover:text-text-primary"
               }`}
             >
@@ -32,7 +33,7 @@ export default function Workspaces() {
             </button>
           ))}
         </div>
-        <button className="w-full flex items-center justify-center gap-1 py-1.5 border border-dashed border-border hover:border-text-secondary/50 rounded-lg text-[11px] font-bold text-text-secondary hover:text-text-primary transition-all">
+        <button className="w-full flex items-center justify-center gap-1 py-1.5 border border-dashed border-border hover:border-text-secondary/50 rounded-lg text-[11px] font-bold text-text-secondary hover:text-text-primary transition-all cursor-pointer select-none">
           <Plus size={12} weight="bold" />
           <span>New Workspace</span>
         </button>
@@ -48,40 +49,29 @@ export default function Workspaces() {
               <GitBranch size={12} className="text-primary-blue" />
               <span>{ws.branch}</span>
             </div>
-            <span className="text-[10px] text-success bg-success/15 px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
-              <span className="w-1 h-1 bg-success rounded-full" />
+            <span className="text-[10px] text-success bg-success/15 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 select-none">
+              <span className="w-1 h-1 bg-success rounded-full animate-pulse" />
               {ws.status}
             </span>
           </div>
-          <button className="text-text-secondary hover:text-text-primary p-1 bg-surface border border-border rounded transition-all">
+          <button className="text-text-secondary hover:text-text-primary p-1 bg-surface border border-border rounded transition-all cursor-pointer">
             <ArrowClockwise size={14} />
           </button>
         </div>
 
         {/* Dashboard Sections Grid */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-5">
+        <div className="flex-1 overflow-y-auto p-4 space-y-5 scrollbar-thin">
           {/* Connected Servers */}
           <div className="space-y-2">
             <div className="flex items-center justify-between select-none">
               <span className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Connected Servers</span>
-              <button className="text-[11px] text-primary-blue hover:underline font-semibold flex items-center gap-0.5">
+              <button className="text-[11px] text-primary-blue hover:underline font-semibold flex items-center gap-0.5 cursor-pointer">
                 <Plus size={11} weight="bold" /> Add server
               </button>
             </div>
             <div className="grid grid-cols-3 gap-3">
               {ws.servers.map((srv) => (
-                <div key={srv.name} className="border border-border rounded-xl p-3 bg-surface hover:shadow-sm transition-all space-y-1.5">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[12.5px] font-bold text-text-primary">{srv.name}</span>
-                    <span className="text-[9.5px] bg-success/10 text-success border border-success/20 rounded px-1 py-0.2 uppercase font-bold">
-                      {srv.latency}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between text-[11px] text-text-secondary font-mono">
-                    <span>{srv.ip}</span>
-                    <span className="uppercase">{srv.type}</span>
-                  </div>
-                </div>
+                <ServerStatusItem key={srv.name} server={srv} />
               ))}
             </div>
           </div>
@@ -92,36 +82,18 @@ export default function Workspaces() {
             <div className="space-y-2">
               <div className="flex items-center justify-between select-none">
                 <span className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Repository</span>
-                <button className="text-[11px] text-primary-blue hover:underline font-semibold flex items-center gap-0.5">
+                <button className="text-[11px] text-primary-blue hover:underline font-semibold flex items-center gap-0.5 cursor-pointer">
                   <Plus size={11} weight="bold" /> Connect repo
                 </button>
               </div>
-              <div className="border border-border rounded-xl p-3.5 bg-surface hover:shadow-sm transition-all space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 bg-background border border-border rounded-lg flex items-center justify-center font-bold text-text-primary text-[11.5px]">
-                      H
-                    </div>
-                    <div>
-                      <div className="text-[13px] font-bold text-text-primary">{ws.repository.name}</div>
-                      <div className="text-[10px] text-text-secondary font-mono">{ws.repository.commit} • {ws.repository.updated}</div>
-                    </div>
-                  </div>
-                  <div className="text-[10px] text-text-secondary font-bold font-mono bg-background border border-border px-1.5 rounded">
-                    Ahead {ws.repository.ahead}
-                  </div>
-                </div>
-                <p className="text-[12px] text-text-primary font-medium italic">
-                  "{ws.repository.message}"
-                </p>
-              </div>
+              <WorkspaceCard repository={ws.repository} />
             </div>
 
             {/* Environments */}
             <div className="space-y-2">
               <div className="flex items-center justify-between select-none">
                 <span className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Environments</span>
-                <button className="text-[11px] text-primary-blue hover:underline font-semibold flex items-center gap-0.5">
+                <button className="text-[11px] text-primary-blue hover:underline font-semibold flex items-center gap-0.5 cursor-pointer">
                   <Plus size={11} weight="bold" /> Add environment
                 </button>
               </div>
@@ -129,7 +101,7 @@ export default function Workspaces() {
                 {ws.environments.map((env) => (
                   <div key={env.name} className="flex items-center justify-between border-b border-border last:border-b-0 pb-1.5 last:pb-0 pt-0.5">
                     <span className="text-[12.5px] font-semibold text-text-primary font-mono">{env.name}</span>
-                    <span className={`text-[10px] font-bold uppercase ${
+                    <span className={`text-[10px] font-bold uppercase select-none ${
                       env.status === 'Active' ? 'text-success bg-success/10 px-1.5 py-0.2 rounded' : 'text-text-secondary bg-background px-1.5 py-0.2 rounded'
                     }`}>{env.status}</span>
                   </div>
@@ -144,7 +116,7 @@ export default function Workspaces() {
             <div className="space-y-2">
               <div className="flex items-center justify-between select-none">
                 <span className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Installed Agents</span>
-                <button className="text-[11px] text-primary-blue hover:underline font-semibold flex items-center gap-0.5">
+                <button className="text-[11px] text-primary-blue hover:underline font-semibold flex items-center gap-0.5 cursor-pointer">
                   <Plus size={11} weight="bold" /> Add agent
                 </button>
               </div>
@@ -155,7 +127,7 @@ export default function Workspaces() {
                       <span className={`w-1.5 h-1.5 rounded-full ${agent.status === 'Active' ? 'bg-success animate-pulse' : 'bg-warning'}`} />
                       <span className="capitalize">{agent.name}</span>
                     </div>
-                    <span className="font-mono text-[10px] text-text-secondary">{agent.version}</span>
+                    <span className="font-mono text-[10px] text-text-secondary select-none">{agent.version}</span>
                   </div>
                 ))}
               </div>
@@ -174,7 +146,7 @@ export default function Workspaces() {
                       <span className="w-1.5 h-1.5 rounded-full bg-success" />
                       <span className="truncate">{session.name}</span>
                     </div>
-                    <span className="font-mono text-[10px] text-text-secondary shrink-0">{session.duration}</span>
+                    <span className="font-mono text-[10px] text-text-secondary shrink-0 select-none">{session.duration}</span>
                   </div>
                 ))}
               </div>
@@ -191,7 +163,7 @@ export default function Workspaces() {
               {ws.recentFiles.map((file) => (
                 <div key={file.name} className="flex items-center justify-between px-3.5 py-2.5 border-b border-border last:border-b-0 hover:bg-background/40 transition-colors text-[12.5px] text-text-primary font-medium">
                   <div>{file.name}</div>
-                  <div className="flex items-center gap-3 text-[11px] text-text-secondary font-mono">
+                  <div className="flex items-center gap-3 text-[11px] text-text-secondary font-mono select-none">
                     <span>{file.commit}</span>
                     <span>{file.time}</span>
                   </div>
@@ -203,7 +175,7 @@ export default function Workspaces() {
       </div>
 
       {/* Column 3: Workspace Details & Env Preview */}
-      <div className="w-[320px] bg-surface flex flex-col h-full shrink-0 border-l border-border overflow-y-auto">
+      <div className="w-[320px] bg-surface flex flex-col h-full shrink-0 border-l border-border overflow-y-auto scrollbar-thin">
         {/* Workspace details header */}
         <div className="p-4 border-b border-border bg-background/15 select-none">
           <span className="text-[10px] font-bold text-text-secondary uppercase tracking-wider">Workspace details</span>
@@ -223,7 +195,7 @@ export default function Workspaces() {
             <span className="text-[9.5px] bg-background border border-border px-1.5 py-0.2 rounded font-mono font-medium">dev.local</span>
           </div>
           <div className="bg-[#071126] border border-[#1E293B] rounded-xl p-3 h-[200px] overflow-y-auto font-mono text-[10.5px] text-[#94A3B8] leading-relaxed scrollbar-thin select-text">
-            <div className="text-success font-semibold flex items-center gap-1.5 mb-1.5">
+            <div className="text-success font-semibold flex items-center gap-1.5 mb-1.5 select-none">
               <span className="relative flex h-1.5 w-1.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-success"></span>
@@ -251,19 +223,19 @@ export default function Workspaces() {
         <div className="p-4 space-y-2 select-none">
           <span className="text-[10px] font-bold text-text-secondary uppercase tracking-wider block">Quick Actions</span>
           <div className="grid grid-cols-1 gap-1.5 text-[12px] font-semibold text-text-primary">
-            <button className="flex items-center justify-between border border-border hover:bg-background rounded-lg p-2.5 text-left transition-all">
+            <button className="flex items-center justify-between border border-border hover:bg-background rounded-lg p-2.5 text-left transition-all cursor-pointer">
               <span>Connect repository</span>
               <CaretRight size={12} className="text-text-secondary" />
             </button>
-            <button className="flex items-center justify-between border border-border hover:bg-background rounded-lg p-2.5 text-left transition-all">
+            <button className="flex items-center justify-between border border-border hover:bg-background rounded-lg p-2.5 text-left transition-all cursor-pointer">
               <span>Add server</span>
               <CaretRight size={12} className="text-text-secondary" />
             </button>
-            <button className="flex items-center justify-between border border-border hover:bg-background rounded-lg p-2.5 text-left transition-all">
+            <button className="flex items-center justify-between border border-border hover:bg-background rounded-lg p-2.5 text-left transition-all cursor-pointer">
               <span>New session</span>
               <CaretRight size={12} className="text-text-secondary" />
             </button>
-            <button className="flex items-center justify-between border border-border hover:bg-background rounded-lg p-2.5 text-left transition-all">
+            <button className="flex items-center justify-between border border-border hover:bg-background rounded-lg p-2.5 text-left transition-all cursor-pointer">
               <span className="font-mono">Open in terminal</span>
               <CaretRight size={12} className="text-text-secondary" />
             </button>

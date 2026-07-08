@@ -5,7 +5,7 @@ import {
   Terminal,
   ArrowSquareOut
 } from "@phosphor-icons/react";
-import { mockSessions } from "../data/mockData";
+import { mockSessions } from "../mocks/session.mock";
 
 export default function Sessions() {
   const [selectedSessionId, setSelectedSessionId] = useState<number>(1);
@@ -32,7 +32,7 @@ export default function Sessions() {
           <div className="flex bg-background p-0.5 rounded-lg text-[12px] font-semibold border border-border select-none">
             <button 
               onClick={() => setActiveTab("active")}
-              className={`flex-1 py-1 text-center rounded-md ${
+              className={`flex-1 py-1 text-center rounded-md cursor-pointer ${
                 activeTab === "active" ? "bg-surface text-primary-blue shadow-sm" : "text-text-secondary hover:text-text-primary"
               }`}
             >
@@ -40,7 +40,7 @@ export default function Sessions() {
             </button>
             <button 
               onClick={() => setActiveTab("idle")}
-              className={`flex-1 py-1 text-center rounded-md ${
+              className={`flex-1 py-1 text-center rounded-md cursor-pointer ${
                 activeTab === "idle" ? "bg-surface text-primary-blue shadow-sm" : "text-text-secondary hover:text-text-primary"
               }`}
             >
@@ -48,7 +48,7 @@ export default function Sessions() {
             </button>
             <button 
               onClick={() => setActiveTab("completed")}
-              className={`flex-1 py-1 text-center rounded-md ${
+              className={`flex-1 py-1 text-center rounded-md cursor-pointer ${
                 activeTab === "completed" ? "bg-surface text-primary-blue shadow-sm" : "text-text-secondary hover:text-text-primary"
               }`}
             >
@@ -58,14 +58,14 @@ export default function Sessions() {
         </div>
 
         {/* Sessions Scroll List */}
-        <div className="flex-1 overflow-y-auto p-2 space-y-1">
+        <div className="flex-1 overflow-y-auto p-2 space-y-1 scrollbar-thin">
           {filteredSessions.map((session) => (
             <div
               key={session.id}
               onClick={() => setSelectedSessionId(session.id)}
               className={`p-3 rounded-xl border cursor-pointer transition-all ${
                 selectedSessionId === session.id
-                  ? "bg-active-bg/35 border-primary-blue shadow-sm text-text-primary"
+                  ? "bg-active-bg/35 border-primary-blue shadow-sm text-text-primary font-semibold"
                   : "bg-surface border-border hover:bg-background text-text-secondary hover:text-text-primary"
               }`}
             >
@@ -76,7 +76,7 @@ export default function Sessions() {
                   }`} />
                   <span className="text-[13px] font-bold text-text-primary truncate max-w-[160px]">{session.name}</span>
                 </div>
-                <span className="text-[10px] bg-background border border-border rounded px-1.5 py-0.2 font-semibold">
+                <span className="text-[10px] bg-background border border-border rounded px-1.5 py-0.2 font-semibold select-none">
                   {session.duration}
                 </span>
               </div>
@@ -96,7 +96,7 @@ export default function Sessions() {
       {/* Column 2: Session Details */}
       <div className="flex-1 flex flex-col min-w-0 border-r border-border bg-surface h-full">
         {/* Detail Header */}
-        <div className="p-4 border-b border-border flex items-center justify-between bg-background/20">
+        <div className="p-4 border-b border-border flex items-center justify-between bg-background/20 select-none">
           <div>
             <span className="text-[10px] font-bold text-text-secondary uppercase tracking-wider">Session Details</span>
             <div className="flex items-center gap-2.5 mt-0.5">
@@ -110,13 +110,13 @@ export default function Sessions() {
               </span>
             </div>
           </div>
-          <button className="px-3 py-1.5 bg-error hover:bg-error/90 text-white rounded-lg text-[12px] font-semibold transition-all shadow-sm">
+          <button className="px-3 py-1.5 bg-error hover:bg-error/90 text-white rounded-lg text-[12px] font-semibold transition-all shadow-sm cursor-pointer">
             Terminate
           </button>
         </div>
 
         {/* Info Grid */}
-        <div className="p-4 border-b border-border grid grid-cols-4 gap-4 bg-background/5">
+        <div className="p-4 border-b border-border grid grid-cols-4 gap-4 bg-background/5 select-none">
           <div className="space-y-0.5">
             <span className="text-[10px] text-text-secondary uppercase tracking-wider font-semibold">Agent</span>
             <div className="text-[13px] font-bold text-text-primary capitalize">{selectedSession.agent}</div>
@@ -139,23 +139,23 @@ export default function Sessions() {
         </div>
 
         {/* Sub-cards Content Area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin">
           {/* Linked Task Card */}
           <div className="border border-border rounded-2xl p-4 bg-surface hover:shadow-sm transition-all space-y-3">
-            <div className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Linked Task</div>
+            <div className="text-[11px] font-bold text-text-secondary uppercase tracking-wider select-none">Linked Task</div>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-active-bg flex items-center justify-center text-primary-blue font-bold text-[13px]">
+                <div className="w-8 h-8 rounded-lg bg-active-bg flex items-center justify-center text-primary-blue font-bold text-[13px] select-none">
                   #42
                 </div>
                 <div>
                   <div className="text-[13px] font-bold text-text-primary hover:underline cursor-pointer">
                     auth/session.ts bug fix
                   </div>
-                  <div className="text-[11px] text-text-secondary">Assigned to {selectedSession.agent}</div>
+                  <div className="text-[11px] text-text-secondary select-none">Assigned to {selectedSession.agent}</div>
                 </div>
               </div>
-              <span className="text-[11px] font-semibold text-primary-blue hover:underline cursor-pointer flex items-center gap-0.5">
+              <span className="text-[11px] font-semibold text-primary-blue hover:underline cursor-pointer flex items-center gap-0.5 select-none">
                 <span>Open task</span>
                 <ArrowSquareOut size={12} />
               </span>
@@ -165,44 +165,44 @@ export default function Sessions() {
           {/* Session Health */}
           <div className="border border-border rounded-2xl p-4 bg-surface hover:shadow-sm transition-all flex items-center justify-between">
             <div className="space-y-0.5">
-              <div className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Session Health</div>
+              <div className="text-[11px] font-bold text-text-secondary uppercase tracking-wider select-none">Session Health</div>
               <div className="text-[13px] font-bold text-success flex items-center gap-1.5">
                 <Checks size={16} weight="bold" />
                 <span>Healthy</span>
               </div>
             </div>
-            <span className="text-[11px] text-text-secondary">All systems operational &gt;</span>
+            <span className="text-[11px] text-text-secondary select-none">All systems operational &gt;</span>
           </div>
 
           {/* Recent Activity Timeline */}
           <div className="space-y-3">
-            <div className="text-[11px] font-bold text-text-secondary uppercase tracking-wider">Recent Activity</div>
+            <div className="text-[11px] font-bold text-text-secondary uppercase tracking-wider select-none">Recent Activity</div>
             <div className="border border-border rounded-2xl bg-surface p-4 space-y-4">
               <div className="relative border-l border-border pl-4 space-y-4">
                 <div className="relative">
                   <span className="absolute -left-[21px] top-1.5 w-2 h-2 rounded-full bg-primary-blue border border-surface" />
                   <div className="text-[12.5px] font-bold text-text-primary">Changed auth/session.ts</div>
-                  <div className="text-[11px] text-text-secondary mt-0.5">2m ago • Diff: +24 -6 lines</div>
+                  <div className="text-[11px] text-text-secondary mt-0.5 font-medium">2m ago • Diff: +24 -6 lines</div>
                 </div>
                 <div className="relative">
                   <span className="absolute -left-[21px] top-1.5 w-2 h-2 rounded-full bg-success border border-surface" />
                   <div className="text-[12.5px] font-bold text-text-primary">Ran tests: 12 passed</div>
-                  <div className="text-[11px] text-text-secondary mt-0.5">5m ago • bun test auth.test.ts</div>
+                  <div className="text-[11px] text-text-secondary mt-0.5 font-medium">5m ago • bun test auth.test.ts</div>
                 </div>
                 <div className="relative">
                   <span className="absolute -left-[21px] top-1.5 w-2 h-2 rounded-full bg-text-secondary border border-surface" />
                   <div className="text-[12.5px] font-bold text-text-primary">Installed @types/express</div>
-                  <div className="text-[11px] text-text-secondary mt-0.5">8m ago • bun install dev</div>
+                  <div className="text-[11px] text-text-secondary mt-0.5 font-medium">8m ago • bun install dev</div>
                 </div>
                 <div className="relative">
                   <span className="absolute -left-[21px] top-1.5 w-2 h-2 rounded-full bg-text-secondary border border-surface" />
                   <div className="text-[12.5px] font-bold text-text-primary">Pulled latest from origin/master</div>
-                  <div className="text-[11px] text-text-secondary mt-0.5">10m ago • git pull</div>
+                  <div className="text-[11px] text-text-secondary mt-0.5 font-medium">10m ago • git pull</div>
                 </div>
                 <div className="relative">
                   <span className="absolute -left-[21px] top-1.5 w-2 h-2 rounded-full bg-primary-blue border border-surface" />
                   <div className="text-[12.5px] font-bold text-text-primary">Session started</div>
-                  <div className="text-[11px] text-text-secondary mt-0.5">12m ago</div>
+                  <div className="text-[11px] text-text-secondary mt-0.5 font-medium">12m ago</div>
                 </div>
               </div>
             </div>
@@ -225,7 +225,7 @@ export default function Sessions() {
 
         {/* Terminal Console Output */}
         <div className="flex-1 p-4 overflow-y-auto space-y-3 scrollbar-thin">
-          <div className="text-text-secondary">~/Projects/herdr on master</div>
+          <div className="text-[#94A3B8]">~/Projects/herdr on master</div>
           <div className="text-white flex items-center gap-1.5">
             <span className="text-[#38BDF8] font-bold">$</span>
             <span>bun test</span>

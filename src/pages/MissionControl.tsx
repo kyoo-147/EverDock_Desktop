@@ -11,13 +11,14 @@ import {
   Cpu,
   Heartbeat
 } from "@phosphor-icons/react";
-import { mockSpaces, mockTasks } from "../data/mockData";
+import { mockSpaces } from "../mocks/workspace.mock";
+import { mockTasks } from "../mocks/task.mock";
 
 export default function MissionControl() {
   const pendingTasks = mockTasks.filter(t => t.status === "In Progress" || t.status === "Review");
 
   return (
-    <div className="w-full h-full overflow-y-auto p-6 space-y-6 font-sans bg-background">
+    <div className="w-full h-full overflow-y-auto p-6 space-y-6 font-sans bg-background scrollbar-thin">
       {/* Page Header Title */}
       <div className="flex items-center justify-between select-none">
         <div>
@@ -25,7 +26,7 @@ export default function MissionControl() {
           <p className="text-[12px] text-text-secondary mt-0.5">Control plane overview and operational dashboard.</p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-blue hover:bg-primary-blue-hover text-white rounded-lg text-[12px] font-bold shadow-sm transition-all">
+          <button className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-blue hover:bg-primary-blue-hover text-white rounded-lg text-[12px] font-bold shadow-sm transition-all cursor-pointer">
             <Plus size={14} weight="bold" />
             <span>New Task</span>
           </button>
@@ -93,11 +94,11 @@ export default function MissionControl() {
                     <span className="text-[11px] font-mono text-text-secondary">branch: {space.branch}</span>
                   </div>
                   <div className="border-t border-border/60 pt-3 flex items-center justify-between text-[12.5px] font-semibold text-text-primary">
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1.5 select-none">
                       <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
                       <span>{space.activeCount} active sessions</span>
                     </div>
-                    <span className="text-primary-blue hover:underline cursor-pointer flex items-center gap-0.5 text-[11px] font-bold">
+                    <span className="text-primary-blue hover:underline cursor-pointer flex items-center gap-0.5 text-[11px] font-bold select-none">
                       Open Workspace <ArrowRight size={12} />
                     </span>
                   </div>
@@ -125,11 +126,11 @@ export default function MissionControl() {
               </div>
               {/* Approval controls */}
               <div className="flex items-center gap-3 pt-1 select-none">
-                <button className="flex items-center gap-1 px-4 py-1.5 bg-success hover:bg-success/90 text-white rounded-lg text-[12px] font-bold shadow-sm transition-all">
+                <button className="flex items-center gap-1 px-4 py-1.5 bg-success hover:bg-success/90 text-white rounded-lg text-[12px] font-bold shadow-sm transition-all cursor-pointer">
                   <Check size={14} weight="bold" />
                   <span>Approve Action</span>
                 </button>
-                <button className="flex items-center gap-1 px-4 py-1.5 bg-error hover:bg-error/90 text-white rounded-lg text-[12px] font-bold shadow-sm transition-all">
+                <button className="flex items-center gap-1 px-4 py-1.5 bg-error hover:bg-error/90 text-white rounded-lg text-[12px] font-bold shadow-sm transition-all cursor-pointer">
                   <X size={14} weight="bold" />
                   <span>Reject Action</span>
                 </button>
@@ -171,19 +172,19 @@ export default function MissionControl() {
           <div className="space-y-2 select-none">
             <h3 className="text-[12px] font-bold text-text-secondary uppercase tracking-wider">Quick Actions</h3>
             <div className="bg-surface border border-border rounded-2xl p-4 grid grid-cols-2 gap-2 text-[12px] font-semibold text-text-primary">
-              <button className="flex flex-col items-center justify-center p-3 border border-border hover:bg-background rounded-xl text-center transition-all">
+              <button className="flex flex-col items-center justify-center p-3 border border-border hover:bg-background rounded-xl text-center transition-all cursor-pointer">
                 <Plus size={18} className="text-text-secondary mb-1" />
                 <span>New Task</span>
               </button>
-              <button className="flex flex-col items-center justify-center p-3 border border-border hover:bg-background rounded-xl text-center transition-all">
+              <button className="flex flex-col items-center justify-center p-3 border border-border hover:bg-background rounded-xl text-center transition-all cursor-pointer">
                 <Clock size={18} className="text-text-secondary mb-1" />
                 <span>Create Session</span>
               </button>
-              <button className="flex flex-col items-center justify-center p-3 border border-border hover:bg-background rounded-xl text-center transition-all">
+              <button className="flex flex-col items-center justify-center p-3 border border-border hover:bg-background rounded-xl text-center transition-all cursor-pointer">
                 <Folder size={18} className="text-text-secondary mb-1" />
                 <span>Import Repo</span>
               </button>
-              <button className="flex flex-col items-center justify-center p-3 border border-border hover:bg-background rounded-xl text-center transition-all">
+              <button className="flex flex-col items-center justify-center p-3 border border-border hover:bg-background rounded-xl text-center transition-all cursor-pointer">
                 <Desktop size={18} className="text-text-secondary mb-1" />
                 <span>Add Server</span>
               </button>
@@ -195,24 +196,24 @@ export default function MissionControl() {
             <h3 className="text-[12px] font-bold text-text-secondary uppercase tracking-wider select-none">Agent Activity</h3>
             <div className="bg-surface border border-border rounded-2xl p-4 space-y-3.5 text-[12.5px] text-text-primary font-medium">
               <div className="flex items-start gap-2.5">
-                <div className="w-5 h-5 rounded bg-active-bg flex items-center justify-center font-bold text-[9px] text-primary-blue mt-0.5">CL</div>
+                <div className="w-5 h-5 rounded bg-active-bg flex items-center justify-center font-bold text-[9px] text-primary-blue mt-0.5 select-none">CL</div>
                 <div>
                   <div>Claude: Analyzed authentication paths</div>
-                  <span className="text-[10px] text-text-secondary">2m ago • Space: herdr</span>
+                  <span className="text-[10px] text-text-secondary select-none">2m ago • Space: herdr</span>
                 </div>
               </div>
               <div className="flex items-start gap-2.5 border-t border-border/60 pt-3">
-                <div className="w-5 h-5 rounded bg-active-bg flex items-center justify-center font-bold text-[9px] text-primary-blue mt-0.5">CD</div>
+                <div className="w-5 h-5 rounded bg-active-bg flex items-center justify-center font-bold text-[9px] text-primary-blue mt-0.5 select-none">CD</div>
                 <div>
                   <div>Codex: Refactored database indices</div>
-                  <span className="text-[10px] text-text-secondary">8m ago • Space: herdr</span>
+                  <span className="text-[10px] text-text-secondary select-none">8m ago • Space: herdr</span>
                 </div>
               </div>
               <div className="flex items-start gap-2.5 border-t border-border/60 pt-3">
-                <div className="w-5 h-5 rounded bg-active-bg flex items-center justify-center font-bold text-[9px] text-primary-blue mt-0.5">OC</div>
+                <div className="w-5 h-5 rounded bg-active-bg flex items-center justify-center font-bold text-[9px] text-primary-blue mt-0.5 select-none">OC</div>
                 <div>
                   <div>OpenCode: Ran middleware test suite</div>
-                  <span className="text-[10px] text-text-secondary">22m ago • Space: herdr</span>
+                  <span className="text-[10px] text-text-secondary select-none">22m ago • Space: herdr</span>
                 </div>
               </div>
             </div>

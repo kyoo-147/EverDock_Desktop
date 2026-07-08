@@ -8,7 +8,7 @@ import {
   Terminal,
   Heartbeat
 } from "@phosphor-icons/react";
-import { mockScreens } from "../data/mockData";
+import { mockScreens } from "../mocks/screen.mock";
 
 export default function ScreenFleet() {
   const [selectedScreenId, setSelectedScreenId] = useState<string>("1");
@@ -22,7 +22,7 @@ export default function ScreenFleet() {
       <div className="w-[200px] border-r border-border bg-surface flex flex-col h-full shrink-0 p-4 space-y-4">
         <div>
           <h2 className="text-[14px] font-bold text-text-primary uppercase tracking-wider">Screen Fleet</h2>
-          <p className="text-[11px] text-text-secondary mt-0.5">Monitor and open remote developer screens.</p>
+          <p className="text-[11px] text-text-secondary mt-0.5 font-medium leading-normal">Monitor and open remote developer screens.</p>
         </div>
 
         {/* Environments Filter */}
@@ -31,7 +31,7 @@ export default function ScreenFleet() {
           <div className="space-y-[1px] text-[12.5px] font-medium text-text-secondary">
             <button 
               onClick={() => setEnvFilter("All")}
-              className={`w-full flex items-center justify-between px-2.5 py-1 rounded-md ${
+              className={`w-full flex items-center justify-between px-2.5 py-1 rounded-md cursor-pointer ${
                 envFilter === "All" ? "bg-active-bg text-primary-blue font-bold" : "hover:bg-background hover:text-text-primary"
               }`}
             >
@@ -40,18 +40,18 @@ export default function ScreenFleet() {
             </button>
             <button 
               onClick={() => setEnvFilter("Production")}
-              className={`w-full flex items-center justify-between px-2.5 py-1 rounded-md ${
+              className={`w-full flex items-center justify-between px-2.5 py-1 rounded-md cursor-pointer ${
                 envFilter === "Production" ? "bg-active-bg text-primary-blue font-bold" : "hover:bg-background hover:text-text-primary"
               }`}
             >
               <span>Production</span>
               <span className="text-[10px] text-text-secondary">4</span>
             </button>
-            <button className="w-full flex items-center justify-between px-2.5 py-1 rounded-md hover:bg-background hover:text-text-primary">
+            <button className="w-full flex items-center justify-between px-2.5 py-1 rounded-md hover:bg-background hover:text-text-primary cursor-pointer">
               <span>Staging</span>
               <span className="text-[10px]">3</span>
             </button>
-            <button className="w-full flex items-center justify-between px-2.5 py-1 rounded-md hover:bg-background hover:text-text-primary">
+            <button className="w-full flex items-center justify-between px-2.5 py-1 rounded-md hover:bg-background hover:text-text-primary cursor-pointer">
               <span>Development</span>
               <span className="text-[10px]">5</span>
             </button>
@@ -60,10 +60,10 @@ export default function ScreenFleet() {
 
         {/* Status Filters */}
         <div className="space-y-2 border-t border-border pt-3">
-          <span className="text-[10px] font-bold text-text-secondary uppercase tracking-wider block">Filters</span>
+          <span className="text-[10px] font-bold text-text-secondary uppercase tracking-wider block select-none">Filters</span>
           
           <div className="space-y-1.5">
-            <span className="text-[11px] font-semibold text-text-primary">Status</span>
+            <span className="text-[11px] font-semibold text-text-primary select-none">Status</span>
             <div className="space-y-1 text-[12px] text-text-secondary">
               <label className="flex items-center gap-2 cursor-pointer hover:text-text-primary">
                 <input type="checkbox" defaultChecked className="rounded border-border text-primary-blue focus:ring-primary-blue w-3.5 h-3.5" />
@@ -96,13 +96,13 @@ export default function ScreenFleet() {
         </div>
 
         {/* Screens grid container */}
-        <div className="flex-1 overflow-y-auto p-4 grid grid-cols-2 gap-4 auto-rows-max select-none">
+        <div className="flex-1 overflow-y-auto p-4 grid grid-cols-2 gap-4 auto-rows-max select-none scrollbar-thin">
           {mockScreens.map((screen) => (
             <div
               key={screen.id}
               onClick={() => setSelectedScreenId(screen.id)}
               className={`bg-surface border rounded-2xl p-4 cursor-pointer hover:shadow-sm transition-all space-y-3 ${
-                selectedScreenId === screen.id ? "border-primary-blue shadow-sm ring-1 ring-primary-blue/30" : "border-border"
+                selectedScreenId === screen.id ? "border-primary-blue shadow-sm ring-1 ring-primary-blue/30 font-semibold" : "border-border"
               }`}
             >
               {/* Card top details */}
@@ -149,13 +149,13 @@ export default function ScreenFleet() {
       </div>
 
       {/* Column 3: Screen details & Remote mirror view */}
-      <div className="w-[320px] bg-surface flex flex-col h-full shrink-0 overflow-y-auto">
+      <div className="w-[320px] bg-surface flex flex-col h-full shrink-0 overflow-y-auto scrollbar-thin">
         {/* Detail Header */}
         <div className="p-4 border-b border-border bg-background/15 flex items-center justify-between select-none">
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[10.5px] font-mono text-text-secondary uppercase">{selectedScreen.server}</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-success" />
+              <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
               <span className="text-[9.5px] text-success font-bold uppercase">Online</span>
             </div>
             <h3 className="text-[15px] font-bold text-text-primary mt-1">{selectedScreen.name}</h3>
@@ -171,7 +171,7 @@ export default function ScreenFleet() {
             <span className="text-[10px] font-bold text-text-secondary uppercase tracking-wider">Remote Screen Mirror</span>
             <span className="text-[9.5px] text-text-secondary font-semibold">1280x800</span>
           </div>
-          <div className="bg-[#071126] border border-[#1E293B] rounded-xl p-3 h-[200px] font-mono text-[9px] text-[#94A3B8] leading-relaxed overflow-hidden relative select-text select-none">
+          <div className="bg-[#071126] border border-[#1E293B] rounded-xl p-3 h-[200px] font-mono text-[9px] text-[#94A3B8] leading-relaxed overflow-hidden relative select-text">
             <div>
               ubuntu@prod-web-01:~/app$ git status<br />
               On branch master<br />
@@ -192,19 +192,19 @@ export default function ScreenFleet() {
           </div>
           {/* Action buttons */}
           <div className="grid grid-cols-4 gap-1.5 pt-1 select-none">
-            <button className="flex flex-col items-center justify-center py-2.5 bg-primary-blue hover:bg-primary-blue-hover text-white rounded-xl text-[10.5px] font-bold shadow-sm transition-all">
+            <button className="flex flex-col items-center justify-center py-2.5 bg-primary-blue hover:bg-primary-blue-hover text-white rounded-xl text-[10.5px] font-bold shadow-sm transition-all cursor-pointer">
               <ArrowSquareOut size={16} weight="bold" className="mb-0.5" />
               <span>Open</span>
             </button>
-            <button className="flex flex-col items-center justify-center py-2.5 border border-border hover:bg-background rounded-xl text-[10.5px] font-semibold text-text-primary transition-all">
+            <button className="flex flex-col items-center justify-center py-2.5 border border-border hover:bg-background rounded-xl text-[10.5px] font-semibold text-text-primary transition-all cursor-pointer">
               <Eye size={16} className="mb-0.5" />
               <span>Follow</span>
             </button>
-            <button className="flex flex-col items-center justify-center py-2.5 border border-border hover:bg-background rounded-xl text-[10.5px] font-semibold text-text-primary transition-all">
+            <button className="flex flex-col items-center justify-center py-2.5 border border-border hover:bg-background rounded-xl text-[10.5px] font-semibold text-text-primary transition-all cursor-pointer">
               <CornersOut size={16} className="mb-0.5" />
               <span>Full</span>
             </button>
-            <button className="flex flex-col items-center justify-center py-2.5 border border-border hover:bg-background rounded-xl text-[10.5px] font-semibold text-text-primary transition-all">
+            <button className="flex flex-col items-center justify-center py-2.5 border border-border hover:bg-background rounded-xl text-[10.5px] font-semibold text-text-primary transition-all cursor-pointer">
               <SlidersHorizontal size={16} className="mb-0.5" />
               <span>Inspect</span>
             </button>
@@ -214,7 +214,7 @@ export default function ScreenFleet() {
         {/* Details list */}
         <div className="p-4 space-y-4">
           <div className="space-y-1.5">
-            <span className="text-[10px] font-bold text-text-secondary uppercase tracking-wider">Details</span>
+            <span className="text-[10px] font-bold text-text-secondary uppercase tracking-wider select-none">Details</span>
             <div className="border border-border rounded-xl p-3 bg-background/5 text-[12px] font-medium text-text-primary space-y-2">
               <div className="flex justify-between"><span className="text-text-secondary font-normal">Environment</span><span className="font-semibold">Production</span></div>
               <div className="flex justify-between"><span className="text-text-secondary font-normal">Space</span><span className="font-semibold">herdr</span></div>
@@ -229,7 +229,7 @@ export default function ScreenFleet() {
 
           {/* Recent Activity */}
           <div className="space-y-2 pt-2">
-            <span className="text-[10px] font-bold text-text-secondary uppercase tracking-wider block">Recent Activity</span>
+            <span className="text-[10px] font-bold text-text-secondary uppercase tracking-wider block select-none">Recent Activity</span>
             <div className="border border-border rounded-xl bg-surface p-3 space-y-3 text-[12px] font-semibold text-text-primary">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
